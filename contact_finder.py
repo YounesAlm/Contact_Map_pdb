@@ -26,13 +26,13 @@ with open( param.pdb ) as f:
     lines= content.split('\n')
     for l in lines:
         words = l.split()
-        if len(words)>1 and words[0]=='ATOM' and words[3]!='WAT':
-            if int(words[5])>=begin_1 and int(words[5])<=end_1:
-                prot[words[5]]={ 'resname' : words[3] , 'domain' : 1 , 'xca' : float(words[6]), 'yca' : float(words[7]), 'zca' : float(words[8]) }
-            elif int(words[5])>=begin_2 and int(words[5])<=end_2:
-                prot[words[5]]={ 'resname' : words[3] , 'domain' : 2 , 'xca' : float(words[6]), 'yca' : float(words[7]), 'zca' : float(words[8]) }
+        if len(words)>1 and words[0]=='ATOM' and words[3]!='WAT' and words[3]!='CL' and words[3]!='NA' and str.isdigit(words[4]):
+            if int(words[4])>=begin_1 and int(words[4])<=end_1:
+                prot[words[4]]={ 'resname' : words[3] , 'domain' : 1 , 'xca' : float(words[5]), 'yca' : float(words[6]), 'zca' : float(words[7]) }
+            elif int(words[4])>=begin_2 and int(words[4])<=end_2:
+                prot[words[4]]={ 'resname' : words[3] , 'domain' : 2 , 'xca' : float(words[5]), 'yca' : float(words[6]), 'zca' : float(words[7]) }
             else:
-                prot[words[5]]={ 'resname' : words[3] , 'domain' : 0 , 'xca' : float(words[6]), 'yca' : float(words[7]), 'zca' : float(words[8]) }
+                prot[words[4]]={ 'resname' : words[3] , 'domain' : 0 , 'xca' : float(words[5]), 'yca' : float(words[6]), 'zca' : float(words[7]) }
 #search for close contacts, defined as a distance inferior or equal to 8 angstrom
 already_visited=[] #save the tuple of the visited contact relationship to avoid duplicates in final output
 for u in prot:
@@ -44,6 +44,6 @@ for u in prot:
             if (u,v) not in already_visited and (v,u) not in already_visited:
                 distance = sqrt(pow(dx,2)+pow(dy,2)+pow(dz,2))
                 if distance <= 8:
-                    print( prot[u]['resname'],u,distance,prot[v]['resname'],v )
+                    print( prot[u]['resname'],u,distance,prot[v]['resname'],v , sep=',')
                     already_visited.append((u,v))
                     already_visited.append((v,u))

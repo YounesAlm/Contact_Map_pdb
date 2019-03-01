@@ -1,0 +1,8 @@
+parm Mt_LYR3_prot_wat.prmtop
+trajin md1.mdcrd
+strip :WAT
+strip :Na+
+strip :Cl-
+trajout Mt_prot_frame.pdb pdb multi onlyframes 1-5000
+run
+quit
